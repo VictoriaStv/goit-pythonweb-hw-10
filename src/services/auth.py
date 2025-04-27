@@ -46,6 +46,17 @@ def authenticate_user(email: str, password: str, db: Session) -> Optional[User]:
         return None
     return user
 
+def create_email_verification_token(email: str):
+    expire = datetime.utcnow() + timedelta(minutes=30)
+    to_encode = {"sub": email, "exp": expire}
+    encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
+    return encoded_jwt
+
+
+def decode_email_verification_token(token: str):
+    payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+    return payload.get("sub")
+
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> User:
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,

@@ -3,13 +3,14 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from src.conf.config import settings
 
-def send_verification_email(to_email: str, username: str, token: str):
+
+def send_verification_email(to_email: str, username: str, token: str, base_url: str):
     msg = MIMEMultipart("alternative")
     msg["Subject"] = "Verify your email"
     msg["From"] = settings.SMTP_USER
     msg["To"] = to_email
 
-    verification_link = f"http://localhost:8000/auth/verify-email?token={token}"
+    verification_link = f"{base_url}auth/verify-email?token={token}"
     html = f"""
     <html>
       <body>

@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks, Request
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordRequestForm
-from slowapi.decorator import limiter
+from src.services.limiter import limiter  
 from fastapi import File, UploadFile
 
 from src.services.cloudinary_service import upload_avatar
@@ -16,8 +16,8 @@ from src.services.auth import (
     get_current_user,
     create_email_verification_token,
     decode_email_verification_token,
-    send_verification_email,
 )
+from src.services.email import send_verification_email
 
 router = APIRouter()
 
@@ -77,7 +77,7 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
 
 @router.get("/me", response_model=UserResponse)
 @limiter.limit("5/minute")
-def read_users_me(current_user: User = Depends(get_current_user)):
+def read_users_me(request: Request, current_user: User = Depends(get_current_user)):
     return current_user
 
 @router.patch("/avatar", response_model=UserResponse)
