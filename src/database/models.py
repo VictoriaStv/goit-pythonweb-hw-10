@@ -9,4 +9,5 @@ class User(Base):
     email = Column(String(100), unique=True, index=True)
     password = Column(String(255), nullable=False)
     confirmed = Column(Boolean, default=False)
-    avatar = Column(String(255), nullable=True)
+    avatar = Column(String, nullable=True)
+

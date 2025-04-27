@@ -12,3 +12,5 @@ fastapi-mail
 cloudinary
 slowapi
 python-multipart
+slowapi==0.1.5
+cloudinary

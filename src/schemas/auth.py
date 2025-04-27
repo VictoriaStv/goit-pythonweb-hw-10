@@ -10,9 +10,10 @@ class UserResponse(BaseModel):
     username: str
     email: EmailStr
     confirmed: bool
+    avatar: str | None = None
 
-class Config:
-    from_attributes = True
+    class Config:
+        from_attributes = True
 
 
 class Token(BaseModel):
